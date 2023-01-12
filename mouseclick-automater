@@ -1,0 +1,74 @@
+#include <AutoItX.au3>
+
+Global $x_hangup, $y_hangup, $x_notReached, $y_notReached, $x_noConnection, $y_noConnection, $x_dontCall, $y_dontCall, $x_nextNumber, $y_nextNumber
+
+; Initialize coordinates
+$x_hangup = 74
+$y_hangup = 435
+$x_notReached = 537
+$y_notReached = 238
+$x_noConnection = 266
+$y_noConnection = 266
+$x_dontCall = 550
+$y_dontCall = 206
+$x_nextNumber = 91
+$y_nextNumber = 201
+
+HotKeySet("{END}","_exit")
+HotKeySet("{ENTER}","_notReached")
+HotKeySet("{NUMPAD0}","_noConnection")
+HotKeySet("{NUMPADSUB}","_dontCall")
+
+While 1
+    Sleep(500)
+WEnd
+
+Func _exit()
+    Exit 0
+EndFunc
+
+; Function to hang up the call
+Func hangup()
+    MouseClick("left", $x_hangup, $y_hangup, 1, 0)
+EndFunc
+
+; Function to wait for hangup cause window
+Func waitForCauseWindow()
+    Do
+        PixelSearch(800, 434, 850, 434, 0x99ff99, 0)
+    Until Not @error
+EndFunc
+
+; Function to mark the call as 'not reached' and dial the next number
+Func _notReached()
+    hangup()
+    waitForColor()
+    ; mark as not reached
+    MouseClick("left", $x_notReached, $y_notReached, 2, 0)
+    Sleep(820)
+    ; dial next number
+    MouseClick("left", $x_nextNumber, $y_nextNumber, 10, 0)
+EndFunc
+
+; Function to mark the call as 'no connection' and dial the next number
+Func _noConnection()
+    hangup()
+    waitForColor()
+    ; mark as no connection
+    MouseClick("left", $x_noConnection, $y_noConnection, 2, 0)
+    Sleep(820)
+    ; dial next number
+    MouseClick("left", $x_nextNumber, $y_nextNumber, 10, 0)
+EndFunc
+
+; Function to mark the call as 'do not call' and dial the next number
+Func _dontCall()
+    hangup()
+    waitForColor()
+    ; mark as do not call
+    MouseClick("left", $x_dontCall, $y_dontCall, 2, 0)
+    Sleep(820)
+    ; dial next number
+    MouseClick("left", $x_nextNumber, $y_nextNumber, 10, 0)
+EndFunc
+
